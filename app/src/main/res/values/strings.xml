@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">MyErasmus</string>
+    <string name="prompt_email">email</string>
+    <string name="hint_username">username</string>
+    <string name="prompt_password">password</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="have_an_account_already">Have an account already?</string>
+    <string name="button_here"> Click here</string>
+    <string name="text_view_or">or</string>
+    <string name="continue_google">Continue with Google</string>
+    <string name="button_login">Login</string>
+    <string name="my_erasmus_logo">My Erasmus logo</string>
+    <string name="show_password_description">Show password</string>
+    <string name="text_view_have_not_account">"Don \'t have an account yet? Sign up "</string>
+    <string name="text_view_recover_password">"Don\'t remember your password? Recover it " </string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed_email">Email not verified</string>
+    <string name="login_failed_login">Wrong email or password</string>
+    <string name="set_username">Username</string>
+    <string name="set_username_description">Please, set your username</string>
+    <string name="error_username">Username has already been chosen</string>
+    <string name="cancel">Cancel</string>
+    <string name="welcome">Welcome!</string>
+    <string name="ok">OK</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="emailConfirmationMessage">Success! A confirmation link will be sent to your e-mail address</string>
+    <string name="email_taken"> Sign up error: this e-mail is already registered </string>
+    <string name="sign_up_bad_email_format"> Sign up error: The e-mail address is badly formatted </string>
+    <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
+    <string name="google_sign_up_error"> Sign up error: there was an error signing up with Google </string>
+    <string name="sign_up_connection_error"> Sign up error: connection error. Could not reach the server </string>
+    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
+    <string name="unknown_sign_up_error"> Sign up error: there was an unknown error </string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="username">username: </string>
+    <string name="search_title" translatable="false">search_title</string>
+
+</resources>
