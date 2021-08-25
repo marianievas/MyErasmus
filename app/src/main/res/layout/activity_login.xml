@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".ui.login.login.LoginActivity2">
 
     <!--  Edit Text for input the user email  -->
     <EditText
@@ -82,9 +82,9 @@
     <!--  Image View of the Logo of our company -->
     <ImageView
         android:id="@+id/imageViewLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="137dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="250dp"
+        android:layout_height="191dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
