@@ -1,18 +1,18 @@
 package com.myerasmus
 
-import android.content.ClipData
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView
-import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.*
+import com.myerasmus.data.model.DiaryFromList
+import com.myerasmus.ui.diary.DiaryAdapter
 
 enum class ProviderType{
     BASIC
@@ -21,11 +21,21 @@ enum class ProviderType{
 class MainActivity : AppCompatActivity()  {
     private lateinit var layout: ConstraintLayout
 
-    private val logOutBtn = findViewById<Button>(R.id.logout)
+    private lateinit var logOutBtn : Button
+
+    private lateinit var recycleView: RecyclerView
+    private lateinit var diaryArrayList : ArrayList<DiaryFromList>
+    private lateinit var myAdapter : DiaryAdapter
+    private lateinit var db : FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_MyErasmus)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //logOutBtn = findViewById(R.id.logout)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -36,14 +46,42 @@ class MainActivity : AppCompatActivity()  {
         val username: String? = bundle?.getString("username")
         val provider: String? = bundle?.getString("provider")
         setup(email ?: "", provider ?: "")
+
+
+
+        recycleView = findViewById(R.id.recyclerView)
+        recycleView.layoutManager = LinearLayoutManager(this)
+        recycleView.setHasFixedSize(true)
+
+        diaryArrayList = arrayListOf()
+        myAdapter = DiaryAdapter(diaryArrayList)
+        eventChangeListener()
+
     }
 
+    private fun eventChangeListener(){
+        db = FirebaseFirestore.getInstance()
+        db.collection("My diary").addSnapshotListener { value, error ->
+            if (error != null) {
+                Log.e("Firestore error", error.message.toString())
+            }
+            for (dc: DocumentChange in value?.documentChanges!!) {
+                if (dc.type == DocumentChange.Type.ADDED) {
+                    diaryArrayList.add(dc.document.toObject(DiaryFromList::class.java))
+                }
+            }
+
+            myAdapter.notifyDataSetChanged()
+        }
+    }
+
+
     private fun setup(email: String, provider: String){
-        title = "Home Screen"
-        logOutBtn.setOnClickListener {
+        title = "My Erasmus"
+      /*  logOutBtn.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             onBackPressed()
-        }
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

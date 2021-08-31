@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.myerasmus.MainActivity
 import com.myerasmus.ProviderType
 import com.myerasmus.R
@@ -26,6 +27,8 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
     private lateinit var editTextPassword : EditText
     private lateinit var goLogin : TextView
     private lateinit var loading : ProgressBar
+
+    private var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_MyErasmus)
@@ -68,11 +71,17 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
     override fun onClick(view: View?) {
         when(view?.id){
             R.id.ButtonSignUp->{
-                Log.d(String.toString(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                Log.d(String.toString(), "AAAAAAAAAAAAAAAAAA")
                 loading.visibility = View.VISIBLE
-                if (editTextEmail.text.isNotEmpty() && editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(editTextEmail.text.toString(), editTextPassword.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful) onBackPressed()
+                val email = editTextEmail.text
+                if (email.isNotEmpty() && editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.toString(), editTextPassword.text.toString()).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        db.collection("users").document(email.toString()).set(
+                            hashMapOf("address" to email.toString())
+                        )
+                        onBackPressed()
+                    }
                     else showAlert()
                     }
                 }

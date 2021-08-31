@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.myerasmus.MainActivity
 import com.myerasmus.ProviderType
 import com.myerasmus.R
@@ -52,7 +53,9 @@ class LoginActivity : AppCompatActivity(){
         buttonLogin.setOnClickListener{
             if (editTextEmail.text.isNotEmpty() && editTextPassword.text.isNotEmpty()){
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(editTextEmail.text.toString(), editTextPassword.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful) showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
+                    if (it.isSuccessful) {
+                        showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
+                    }
                     else showAlert()
                 }
             }

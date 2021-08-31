@@ -1,17 +1,6 @@
-package com.myerasmus.ui
+package com.myerasmus.ui.diary
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.myerasmus.R
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 

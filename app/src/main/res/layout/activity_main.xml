@@ -14,37 +14,15 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:background="@color/primary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/bottom_nav_menu"/>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/buttonLogOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:backgroundTint="@color/primary"
-            android:contentDescription="TODO"
-            android:src="@drawable/ic_baseline_logout_24"
-            app:tint="@color/white" />
-    </androidx.fragment.app.FragmentContainerView>
+        app:menu="@menu/bottom_nav_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonCreateActivity"
+        android:id="@+id/buttonNewEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -53,11 +31,36 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_baseline_add_24"
         android:backgroundTint="@color/primary"
-        app:tint="@color/white"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="TODO" />
+        app:tint="@color/white" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="330dp"
+        android:layout_height="252dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNewEntry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.104">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/primary"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_baseline_add_24"
+        app:tint="@color/white"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="299dp"
+        tools:layout_editor_absoluteY="223dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
