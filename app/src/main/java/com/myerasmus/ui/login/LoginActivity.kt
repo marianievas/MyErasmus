@@ -1,7 +1,9 @@
 package com.myerasmus.ui.login
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -19,7 +21,7 @@ class LoginActivity : AppCompatActivity(){
 
     private lateinit var editTextEmail : EditText
     private lateinit var editTextPassword : EditText
-    private lateinit var buttonLogin : Button
+    private lateinit var loginbtn : Button
     private lateinit var signUpHere : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +33,7 @@ class LoginActivity : AppCompatActivity(){
 
         editTextEmail = findViewById(R.id.editTextEmail)
         editTextPassword = findViewById(R.id.editTextPassword)
-        buttonLogin = findViewById(R.id.buttonLogin)
+        loginbtn = findViewById(R.id.buttonLogin)
         signUpHere = findViewById(R.id.textViewHere)
 
         val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -39,10 +41,6 @@ class LoginActivity : AppCompatActivity(){
         bundle.putString("message", "Firebase integration completed")
         analytics.logEvent("initScreen", bundle)
 
-        setup()
-    }
-
-    private fun setup(){
         title = "Authentication"
 
         signUpHere.setOnClickListener {
@@ -50,8 +48,9 @@ class LoginActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
-        buttonLogin.setOnClickListener{
+        loginbtn.setOnClickListener{
             if (editTextEmail.text.isNotEmpty() && editTextPassword.text.isNotEmpty()){
+                //això ha d'estar pel sign in
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(editTextEmail.text.toString(), editTextPassword.text.toString()).addOnCompleteListener {
                     if (it.isSuccessful) {
                         showHome(it.result?.user?.email ?: "", ProviderType.BASIC)

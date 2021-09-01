@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.login.LoginActivity2">
+    tools:context=".ui.login.LoginActivity">
 
     <!--  Edit Text for input the user email  -->
     <EditText
@@ -51,7 +51,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/primary"
-        android:enabled="false"
         android:text="@string/button_login"
         android:textAllCaps="false"
         android:textColor="@color/black"
