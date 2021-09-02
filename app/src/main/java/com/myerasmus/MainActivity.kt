@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity()  {
         newPageDiary.setOnClickListener{
             val int = Intent(this, CreateEntryDiary::class.java)
             startActivity(int)
-            finish()
+            //finish()
         }
 
         eventChangeListener()
