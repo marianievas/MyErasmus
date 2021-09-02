@@ -2,24 +2,21 @@ package com.myerasmus.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.myerasmus.MainActivity
 import com.myerasmus.ProviderType
 import com.myerasmus.R
 import com.myerasmus.ui.login.LoginActivity
-import org.w3c.dom.Text
 
-class SignUpActivity: AppCompatActivity(), View.OnClickListener{
+class SignUpActivity: AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var signUpBtn : Button
     private lateinit var editTextUsername : EditText
@@ -36,6 +33,8 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        auth = FirebaseAuth.getInstance()
+
         signUpBtn = findViewById(R.id.ButtonSignUp)
         editTextUsername = findViewById(R.id.editTextUsername)
         editTextEmail = findViewById(R.id.editTextEmail2)
@@ -48,44 +47,30 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
         bundle.putString("message", "Firebase integration completed")
         analytics.logEvent("initScreen", bundle)
 
-        /*signUpBtn.setOnClickListener {
-            Log.d(String.toString(), "AAAAAAAAAAAA")
+        signUpBtn.setOnClickListener {
             loading.visibility = View.VISIBLE
-            if (editTextEmail.text.isNotEmpty() && editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(editTextEmail.text.toString(), editTextPassword.text.toString()).addOnCompleteListener {
-                    //if (it.isSuccessful) showHome(it.result?.user?.email ?: "", editTextUsername.text.toString(), ProviderType.BASIC)
-                    if (it.isSuccessful) {
-                        onBackPressed()
-                        // val homeIntent = Intent(this, LoginActivity::class.java)
-                        // startActivity(homeIntent)
-                    } else showAlert()
-                }
+            if (editTextEmail.text.isEmpty() || editTextUsername.text.isEmpty() || editTextPassword.text.isEmpty()) {
+                Toast.makeText(this@SignUpActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
             }
-        }*/
-        signUpBtn.setOnClickListener(this)
-        goLogin.setOnClickListener {
-            onBackPressed()
-        }
-    }
+            else
+            {
+                val email = editTextEmail.text.toString()
+                val password = editTextPassword.text.toString()
 
-    override fun onClick(view: View?) {
-        when(view?.id){
-            R.id.ButtonSignUp->{
-                Log.d(String.toString(), "AAAAAAAAAAAAAAAAAA")
-                loading.visibility = View.VISIBLE
-                val email = editTextEmail.text
-                if (email.isNotEmpty() && editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.toString(), editTextPassword.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        db.collection("users").document(email.toString()).set(
-                            hashMapOf("address" to email.toString())
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Successfully Registered", Toast.LENGTH_LONG)
+                            .show()
+                        db.collection("users").document(email).set(
+                            hashMapOf("address" to email)
                         )
                         onBackPressed()
-                    }
-                    else showAlert()
-                    }
-                }
+                    } else showAlert()
+                })
             }
+        }
+        goLogin.setOnClickListener {
+            onBackPressed()
         }
     }
 

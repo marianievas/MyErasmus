@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_action_name"
+        app:srcCompat="@mipmap/logo"
         android:contentDescription="@string/my_erasmus_logo" />
 
     <!-- ImageView of the icon to show/hide the password -->

@@ -1,11 +1,9 @@
 package com.myerasmus.data.model
 
-import android.provider.MediaStore
-import java.util.*
-
-data class DiaryFromList (
+data class DiaryFromList(
         val title: String,
         val description: String,
-        val date: Date
+        val date: String,
+        val image: String
        // val song: MediaStore.Audio.Playlists
 )

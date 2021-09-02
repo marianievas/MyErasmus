@@ -33,7 +33,49 @@
     <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
     <string name="unknown_sign_up_error"> Sign up error: there was an unknown error </string>
     <string name="invalid_username">Not a valid username</string>
+    <string-array name="choose_mood">
+        <item>Your mood today</item>
+        <item>@drawable/e1 </item>
+        <item>@drawable/e2</item>
+        <item>@drawable/e3</item>
+        <item>@drawable/e4</item>
+        <item>@drawable/e5</item>
+        <item>@drawable/e6</item>
+        <item>@drawable/e7</item>
+        <item>@drawable/e8</item>
+        <item>@drawable/e9</item>
+        <item>@drawable/e10</item>
+        <item>@drawable/e11</item>
+        <item>@drawable/e12</item>
+        <item>@drawable/e13</item>
+        <item>@drawable/e14</item>
+        <item>@drawable/e15</item>
+        <item>@drawable/e16</item>
+        <item>@drawable/e17</item>
+        <item>@drawable/e18</item>
+        <item>@drawable/e19</item>
+        <item>@drawable/e20</item>
+        <item>@drawable/e21</item>
+        <item>@drawable/e22</item>
+        <item>@drawable/e23</item>
+        <item>@drawable/e25</item>
+        <item>@drawable/e26</item>
+        <item>@drawable/e27</item>
+        <item>@drawable/e28</item>
+        <item>@drawable/e29</item>
+        <item>@drawable/e30</item>
+        <item>@drawable/e31</item>
+        <item>@drawable/e32</item>
+        <item>@drawable/e33</item>
+    </string-array>
     <string name="username">username: </string>
     <string name="search_title" translatable="false">search_title</string>
+    <string name="title_entry_diary">Title</string>
+    <string name="insert_title">insert title</string>
+    <string name="about_today">About today</string>
+    <string name="insert_text">insert text</string>
+    <string name="choose_date">Pick a date</string>
+    <string name="show_date">Date</string>
+    <string name="add_new_entry">Add new entry</string>
 
 </resources>
