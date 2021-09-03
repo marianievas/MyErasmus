@@ -1,22 +1,15 @@
 package com.myerasmus.ui.createEntryDiary
 
-import android.media.Image
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.myerasmus.R
+import kotlinx.android.synthetic.main.new_entry_diary.*
 import java.util.*
 
+
 class CreateEntryDiary: AppCompatActivity() {
-
-
-    private lateinit var titleEntry : EditText
-    private lateinit var description : EditText
-    private lateinit var mood : Spinner
-    private lateinit var datePicked : Date
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_MyErasmus)
@@ -27,11 +20,13 @@ class CreateEntryDiary: AppCompatActivity() {
         this.title = "New entry"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        titleEntry = findViewById(R.id.activity_title)
-        description = findViewById(R.id.about_the_activity)
-        mood = findViewById(R.id.your_mood_today)
+        setCustomAdapter()
 
-        //mood.selectedItem
 
+    }
+
+    private fun setCustomAdapter(){
+        val adapter = EmoticonArrayAdapter(this, Emoticons.list!!)
+        mood_spinner.adapter = adapter
     }
 }

@@ -24,13 +24,13 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/title_entry_diary"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.575"
-        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,12 +40,12 @@
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:hint="@string/insert_title"
         android:inputType="textWebEditText"
-        android:textSize="15sp"
         android:padding="18dp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/about_today"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -71,57 +71,46 @@
     <EditText
         android:id="@+id/about_the_activity"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:hint="@string/insert_text"
         android:inputType="textWebEditText"
-        android:textSize="15sp"
         android:padding="18dp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.431"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textAbout" />
 
-    <TextView
-        android:id="@+id/some_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="74dp"
-        tools:layout_editor_absoluteY="463dp"
-        android:visibility="invisible"/>
-
 
     <Spinner
-        android:id="@+id/your_mood_today"
-        android:layout_width="213dp"
+        android:id="@+id/mood_spinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/choose_mood"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.636" />
+        app:layout_constraintTop_toBottomOf="@+id/about_the_activity" />
 
     <Button
         android:id="@+id/btn_pickDate1"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/divider"
         android:text="@string/choose_date"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.019"
-        app:layout_constraintStart_toEndOf="@+id/img_date"
-        app:layout_constraintTop_toBottomOf="@+id/about_the_activity"
-        app:layout_constraintVertical_bias="0.276"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_date"
         tools:ignore="SmallSp" />
 
     <TextView
@@ -129,32 +118,32 @@
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_below="@+id/btn_pickDate1"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="16dp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/btn_pickDate1"
         app:layout_constraintTop_toBottomOf="@+id/about_the_activity"
-        app:layout_constraintVertical_bias="0.253"
         tools:text="@string/show_date" />
 
     <ImageButton
         android:id="@+id/img_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_event_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_create"
-        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_the_activity"
-        app:layout_constraintVertical_bias="0.278"
+        app:layout_constraintTop_toBottomOf="@+id/mood_spinner"
+        app:layout_constraintVertical_bias="0.083"
         tools:ignore="ContentDescription" />
 
     <Button
@@ -168,6 +157,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_pickDate1"
-        app:layout_constraintVertical_bias="0.958" />
+        app:layout_constraintVertical_bias="0.958"
+        android:textSize="16sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
