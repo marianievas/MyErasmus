@@ -2,45 +2,26 @@ package com.myerasmus.ui.createEntryDiary
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.myerasmus.MainActivity
-import com.myerasmus.ProviderType
 import com.myerasmus.R
 import kotlinx.android.synthetic.main.new_entry_diary.*
-import java.util.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.new_entry_diary.view.*
+import java.util.*
 
 
-class CreateEntryDiary: AppCompatActivity(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener  {
+class CreateEntryDiary: AppCompatActivity()  {
 
     private lateinit var titleEntry: EditText
     private lateinit var description: EditText
     private lateinit var btnAdd: Button
-
-    var day = 0
-    var month = 0
-    var year = 0
-    var hour = 0
-    var minute = 0
-
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
-    var savedHour = 0
-    var savedMinute = 0
-
     private lateinit var datePicker: Button
     private lateinit var date: TextView
 
-    var DATE_DIALOG = 1
-    var dateListener: DatePickerDialog.OnDateSetListener? = null
-
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_MyErasmus)
 
@@ -52,7 +33,12 @@ class CreateEntryDiary: AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
         setCustomAdapter()
 
-        initView()
+        titleEntry = findViewById(R.id.activity_title)
+        description = findViewById(R.id.about_the_activity)
+        datePicker = findViewById(R.id.btn_pickDate)
+        date = findViewById(R.id.tvDate)
+        btnAdd = findViewById(R.id.btn_create)
+
 
         btnAdd.setOnClickListener {
             val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {
@@ -66,9 +52,18 @@ class CreateEntryDiary: AppCompatActivity(), DatePickerDialog.OnDateSetListener,
             finish()
         }
 
-        setCurrentDateOnView()
-        addListenerOnButton()
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
 
+        datePicker.setOnClickListener {
+            val dpd = DatePickerDialog(this, { _, year, _, dayOfMonth ->
+                // Display Selected date in TextView
+                date.text = "$dayOfMonth-$month-$year"
+            }, year, month, day)
+            dpd.show()
+        }
     }
 
 
@@ -77,6 +72,7 @@ class CreateEntryDiary: AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         mood_spinner.adapter = adapter
     }
 
+    //no funciona no sé per què
     private fun initView() {
         val view = layoutInflater.inflate(R.layout.new_entry_diary, null)
         titleEntry = view.activity_title
@@ -87,79 +83,5 @@ class CreateEntryDiary: AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     }
 
 
-    /**
-     * This function represents the current time using current locale and timezone
-     */
-    @SuppressLint("SetTextI18n")
-    private fun setCurrentDateOnView() {
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.MINUTE)
-        minute = cal.get(Calendar.MINUTE)
-
-        cal.set(Calendar.MONTH, month)
-        cal.set(Calendar.DAY_OF_MONTH, day)
-        cal.set(Calendar.YEAR, year)
-
-        date.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
-    }
-
-
-    /**
-     * This function let the user pick a date where the activity created will take place
-     */
-    private fun addListenerOnButton() {
-
-        datePicker.setOnClickListener {
-            showDialog(DATE_DIALOG)
-            val dialogDate = DatePickerDialog(this, this, this.year, this.month, this.day)
-            dialogDate.show()
-            dialogDate.datePicker.minDate = System.currentTimeMillis()
-        }
-    }
-
-
-    /**
-     * This function is called every time the user changes the date picked
-     */
-    @SuppressLint("SetTextI18n")
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-
-        // when dialog box is closed, below method will be called.
-        savedDay = dayOfMonth
-        savedMonth = month
-        savedYear = year
-
-        TimePickerDialog(this, this, hour, minute, true).show()
-    }
-
-
-    /**
-     * This function is called when the user is done setting a new time and the dialog has closed
-     */
-    @SuppressLint("SetTextI18n")
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        savedHour = hourOfDay
-        savedMinute = minute
-
-        date.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute"
-    }
-
-    override fun onCreateDialog(id: Int): Dialog? {
-        when (id) {
-            DATE_DIALOG -> {
-                return DatePickerDialog(
-                        this,
-                        dateListener,
-                        year,
-                        month,
-                        day
-                )
-            }
-        }
-        return null
-    }
 
 }
