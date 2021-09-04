@@ -99,7 +99,7 @@
         app:layout_constraintTop_toBottomOf="@+id/about_the_activity" />
 
     <Button
-        android:id="@+id/btn_pickDate1"
+        android:id="@+id/btn_pickDate"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -114,17 +114,17 @@
         tools:ignore="SmallSp" />
 
     <TextView
-        android:id="@+id/tvDate1"
+        android:id="@+id/tvDate"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/btn_pickDate1"
+        android:layout_below="@+id/btn_pickDate"
         android:layout_marginStart="8dp"
         android:layout_marginTop="140dp"
         android:layout_marginEnd="16dp"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btn_pickDate1"
+        app:layout_constraintStart_toEndOf="@+id/btn_pickDate"
         app:layout_constraintTop_toBottomOf="@+id/about_the_activity"
         tools:text="@string/show_date" />
 
@@ -156,7 +156,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pickDate1"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pickDate"
         app:layout_constraintVertical_bias="0.958"
         android:textSize="16sp"/>
 
