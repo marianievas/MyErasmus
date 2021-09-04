@@ -42,5 +42,6 @@
     <string name="choose_date">Pick a date</string>
     <string name="show_date">Date</string>
     <string name="add_new_entry">Add new entry</string>
+    <string name="what_s_your_mood">What\'s your mood?</string>
 
 </resources>

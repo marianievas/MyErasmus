@@ -24,7 +24,7 @@ class EmoticonArrayAdapter(context: Context, emoticonList: List<Emoticon>) : Arr
 
         val view = LayoutInflater.from(context).inflate(R.layout.my_dropdown_emoticons, parent, false)
         view.image.setImageResource(emot!!.image)
-        view.name.text = emot.name
+      //  view.name.text = emot.name
 
         return view
     }

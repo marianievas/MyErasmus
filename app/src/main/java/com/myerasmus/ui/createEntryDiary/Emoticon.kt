@@ -2,7 +2,8 @@ package com.myerasmus.ui.createEntryDiary
 
 import com.myerasmus.R
 
-data class Emoticon(val image: Int, val name: String)
+//data class Emoticon(val image: Int, val name: String)
+data class Emoticon(val image: Int)
 
 object Emoticons {
     private val images = intArrayOf(
@@ -41,7 +42,7 @@ object Emoticons {
             R.drawable.e33,
     )
 
-    private val emoticons = arrayOf(
+   /* private val emoticons = arrayOf(
             "What's your mood?",
             "1",
             "2",
@@ -75,7 +76,7 @@ object Emoticons {
             "31",
             "32",
             "33",
-    )
+    )*/
 
     var list: ArrayList<Emoticon>? = null
         get() {
@@ -83,9 +84,10 @@ object Emoticons {
             field = ArrayList()
             for (i in images.indices) {
                 val imageId = images[i]
-                val countryName = emoticons[i]
+        //        val countryName = emoticons[i]
 
-                val emoticon = Emoticon(imageId, countryName)
+         //       val emoticon = Emoticon(imageId, countryName)
+                val emoticon = Emoticon(imageId)
                 field!!.add(emoticon)
             }
             return field
