@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide.with
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.myerasmus.MainActivity
@@ -33,8 +34,7 @@ class CreateEntryDiary: AppCompatActivity()  {
     var storageReference: StorageReference? = null
     var progressDialog: ProgressDialog? = null
 
-
-   // val GlideApp = MyAppGlideModule()
+    private var db = FirebaseFirestore.getInstance()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,15 +57,7 @@ class CreateEntryDiary: AppCompatActivity()  {
 
 
         btnAdd.setOnClickListener {
-            val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {
-                // putExtra("titleEnt", titleEntry)
-                // putExtra("descrEnt", description)
-                // putExtra("provider", ProviderType.BASIC.name)
-
-                //putExtra("date", date)
-            }
-            startActivity(mainIntent)
-            finish()
+            newEntry()
         }
 
         val c = Calendar.getInstance()
@@ -138,6 +130,23 @@ class CreateEntryDiary: AppCompatActivity()  {
         btnAdd = view.btn_create
         datePicker = view.btn_pickDate
         date = view.tvDate
+    }
+
+    private fun newEntry(){
+        val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {
+            // putExtra("titleEnt", titleEntry)
+            // putExtra("descrEnt", description)
+            // putExtra("provider", ProviderType.BASIC.name)
+
+            //putExtra("date", date)
+        }
+
+        //guardar entrada del diari per l'usuari
+        db.collection("users").document(email).set(
+                hashMapOf("address" to email, "username" to username))
+
+        startActivity(mainIntent)
+        finish()
     }
 
 

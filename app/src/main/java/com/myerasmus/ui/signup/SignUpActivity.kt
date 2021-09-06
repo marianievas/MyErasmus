@@ -56,13 +56,14 @@ class SignUpActivity: AppCompatActivity() {
             {
                 val email = editTextEmail.text.toString()
                 val password = editTextPassword.text.toString()
+                val username = editTextUsername.text.toString()
 
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Successfully Registered", Toast.LENGTH_LONG)
                             .show()
                         db.collection("users").document(email).set(
-                            hashMapOf("address" to email)
+                            hashMapOf("address" to email, "username" to username)
                         )
                         onBackPressed()
                     } else showAlert()
