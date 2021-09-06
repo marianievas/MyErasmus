@@ -6,10 +6,10 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide.with
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.myerasmus.MainActivity
@@ -33,6 +33,8 @@ class CreateEntryDiary: AppCompatActivity()  {
     var storageReference: StorageReference? = null
     var progressDialog: ProgressDialog? = null
 
+
+   // val GlideApp = MyAppGlideModule()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +104,7 @@ class CreateEntryDiary: AppCompatActivity()  {
                         if (progressDialog!!.isShowing) progressDialog!!.dismiss()
                         Toast.makeText(this@CreateEntryDiary, "Failed to Upload", Toast.LENGTH_SHORT).show()
                     }
+            with(applicationContext).load(it).into(mainPhoto);
         }
     }
 
