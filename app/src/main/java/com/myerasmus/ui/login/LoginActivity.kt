@@ -1,7 +1,10 @@
 package com.myerasmus.ui.login
 
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -9,11 +12,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.myerasmus.MainActivity
 import com.myerasmus.ProviderType
 import com.myerasmus.R
+import com.myerasmus.common.Constants
 import com.myerasmus.ui.signup.SignUpActivity
 
 
@@ -21,8 +27,8 @@ class LoginActivity : AppCompatActivity(){
 
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var editTextEmail : EditText
-    private lateinit var editTextPassword : EditText
+    private lateinit var emailET : EditText
+    private lateinit var passwordET : EditText
     private lateinit var loginbtn : Button
     private lateinit var signUpHere : TextView
 
@@ -35,8 +41,10 @@ class LoginActivity : AppCompatActivity(){
 
         auth = FirebaseAuth.getInstance()
 
-        editTextEmail = findViewById(R.id.editTextEmail)
-        editTextPassword = findViewById(R.id.editTextPassword)
+        isUserLogged()
+
+        emailET = findViewById(R.id.editTextEmail)
+        passwordET = findViewById(R.id.editTextPassword)
         loginbtn = findViewById(R.id.buttonLogin)
         signUpHere = findViewById(R.id.textViewHere)
 
@@ -52,22 +60,56 @@ class LoginActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
-        loginbtn.setOnClickListener{
-            if (editTextEmail.text.isEmpty() || editTextPassword.text.isEmpty()) {
+        /*loginbtn.setOnClickListener{
+            if (emailET.text.isEmpty() || passwordET.text.isEmpty()) {
                 Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
             }
             else{
                 val currentUser: FirebaseUser? = auth.currentUser
-                if (currentUser != null){
-                    auth.createUserWithEmailAndPassword(editTextEmail.text.toString(), editTextPassword.text.toString()).addOnCompleteListener {
+                if (currentUser != null) {
+                    auth.createUserWithEmailAndPassword(
+                        emailET.text.toString(),
+                        passwordET.text.toString()
+                    ).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            Toast.makeText(this, "Successfully Logged In", Toast.LENGTH_LONG).show()
-                            showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
+                            SharedPreferenceManager.setStringValue(
+                                Constants().PREF_EMAIL,
+                                emailET.text.toString()
+                            )
+                            SharedPreferenceManager.setStringValue(
+                                Constants().PREF_PROVIDER,
+                                Constants().PREF_PROVIDER_GOOGLE
+                            )
+                            SharedPreferenceManager.setStringValue(
+                                Constants().PREF_UID,
+                                FirebaseAuth.getInstance().currentUser!!.uid
+                            )
+                            /* SharedPreferenceManager.setStringValue(
+                                Constants().PREF_USERNAME,
+                                it.data.username
+                            )*/
+                            Toast.makeText(this, "Welcome!", Toast.LENGTH_LONG).show()
+                            showHome(Constants().PREF_EMAIL ?: "", ProviderType.BASIC)
                         }
                         else showAlert()
                     }
                 }
-                else Toast.makeText(this, "User not found", Toast.LENGTH_LONG).show()
+                else Toast.makeText(this, "Please sign up", Toast.LENGTH_LONG).show()
+            }
+        }*/
+        loginbtn.setOnClickListener {
+            if (emailET.text.isEmpty() || passwordET.text.isEmpty()) {
+                Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                val currentUser = Firebase.auth.currentUser!!
+                val credential = EmailAuthProvider
+                    .getCredential(emailET.text.toString(), passwordET.text.toString())
+
+                currentUser.reauthenticate(credential)
+                    .addOnCompleteListener { Log.d(TAG, "User re-authenticated.") }
+                Toast.makeText(this, "Welcome!", Toast.LENGTH_LONG).show()
+                showHome(Constants().PREF_EMAIL ?: "", ProviderType.BASIC)
             }
         }
     }
@@ -88,6 +130,18 @@ class LoginActivity : AppCompatActivity(){
         }
         startActivity(homeIntent)
         finish()
+    }
+
+    private fun isUserLogged(){
+        val sharedpreferences: SharedPreferences =
+            applicationContext.getSharedPreferences("Preferences", 0)
+        val login = sharedpreferences.getString("LOGIN", null)
+
+
+        if (login != null) {
+            showHome(Constants().PREF_EMAIL ?: "", ProviderType.BASIC)
+            finish()
+        }
     }
 
 }

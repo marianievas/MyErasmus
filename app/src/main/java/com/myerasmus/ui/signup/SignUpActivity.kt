@@ -12,6 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.myerasmus.ProviderType
 import com.myerasmus.R
+import com.myerasmus.common.Constants
+import com.myerasmus.common.SharedPreferenceManager
 import com.myerasmus.ui.login.LoginActivity
 
 class SignUpActivity: AppCompatActivity() {
@@ -60,6 +62,18 @@ class SignUpActivity: AppCompatActivity() {
 
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        SharedPreferenceManager.setStringValue(
+                            Constants().PREF_EMAIL,
+                            email
+                        )
+                        SharedPreferenceManager.setStringValue(
+                            Constants().PREF_UID,
+                            FirebaseAuth.getInstance().currentUser!!.uid
+                        )
+                        SharedPreferenceManager.setStringValue(
+                            Constants().PREF_USERNAME,
+                            username
+                        )
                         Toast.makeText(this, "Successfully Registered", Toast.LENGTH_LONG)
                             .show()
                         db.collection("users").document(email).set(

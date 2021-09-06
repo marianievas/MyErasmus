@@ -22,6 +22,8 @@
     <string name="cancel">Cancel</string>
     <string name="welcome">Welcome!</string>
     <string name="ok">OK</string>
+    <string name="dialog_logout_message">Are you sure you want to log out?</string>
+    <string name="log_out">Log out</string>
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="emailConfirmationMessage">Success! A confirmation link will be sent to your e-mail address</string>

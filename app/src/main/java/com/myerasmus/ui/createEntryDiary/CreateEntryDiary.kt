@@ -142,13 +142,11 @@ class CreateEntryDiary: AppCompatActivity()  {
         }
 
         //guardar entrada del diari per l'usuari
-        db.collection("users").document(email).set(
+        /*db.collection("users").document(email).set(
                 hashMapOf("address" to email, "username" to username))
 
         startActivity(mainIntent)
-        finish()
+        finish()*/
     }
-
-
 
 }
