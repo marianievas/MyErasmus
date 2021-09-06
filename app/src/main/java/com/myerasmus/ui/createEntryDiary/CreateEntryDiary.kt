@@ -1,27 +1,22 @@
 package com.myerasmus.ui.createEntryDiary
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.content.Intent
-import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.view.View
 import android.widget.*
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.myerasmus.MainActivity
 import com.myerasmus.R
-import com.myerasmus.common.Constants
 import kotlinx.android.synthetic.main.new_entry_diary.*
 import kotlinx.android.synthetic.main.new_entry_diary.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -33,6 +28,11 @@ class CreateEntryDiary: AppCompatActivity()  {
     private lateinit var datePicker: Button
     private lateinit var date: TextView
     private lateinit var mainPhoto: ImageView
+
+    var imageUri: Uri? = null
+    var storageReference: StorageReference? = null
+    var progressDialog: ProgressDialog? = null
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,75 +79,47 @@ class CreateEntryDiary: AppCompatActivity()  {
             dpd.show()
         }
 
-        Glide.with(this)
-                .load(Constants().URL_STORAGE + "upload/userimageget/")
-                .placeholder(R.drawable.friends).centerCrop().circleCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                .into(imageViewPic)
-
-        mainPhoto.setOnClickListener{
-            Dexter.withContext(this)
-                    .withPermissions(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                    )
-                    .withListener(object : MultiplePermissionsListener {
-                        override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                            // check if all permissions are granted
-                            if (report.areAllPermissionsGranted()) {
-                                val pickPhoto = Intent(
-                                        Intent.ACTION_PICK,
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                                )
-                                startActivityForResult(pickPhoto, Constants().SELECT_PHOTO_GALLERY)
-                            }
-                            // check for permanent denial of any permission
-                            if (report.isAnyPermissionPermanentlyDenied) {
-                                // permission is denied permenantly, navigate user to app settings
-                            }
-                        }
-
-                        override fun onPermissionRationaleShouldBeShown(
-                                permissions: List<PermissionRequest>,
-                                token: PermissionToken
-                        ) {
-                            token.continuePermissionRequest()
-                        }
-                    })
-                    .onSameThread()
-                    .check()
+        mainPhoto.setOnClickListener {
+            selectImage()
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    private fun uploadImage() {
+        progressDialog = ProgressDialog(this)
+        progressDialog!!.setTitle("Uploading File....")
+        progressDialog!!.show()
+        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA)
+        val now = Date()
+        val fileName: String = formatter.format(now)
+        storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
+        imageUri?.let {
+            storageReference!!.putFile(it)
+                    .addOnSuccessListener {
+                        mainPhoto.setImageURI(null)
+                        Toast.makeText(this@CreateEntryDiary, "Successfully Uploaded", Toast.LENGTH_SHORT).show()
+                        if (progressDialog!!.isShowing) progressDialog!!.dismiss()
+                    }.addOnFailureListener {
+                        if (progressDialog!!.isShowing) progressDialog!!.dismiss()
+                        Toast.makeText(this@CreateEntryDiary, "Failed to Upload", Toast.LENGTH_SHORT).show()
+                    }
+        }
+    }
+
+    private fun selectImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, 100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants().PICK_PHOTO_FOR_AVATAR && resultCode == AppCompatActivity.RESULT_OK) {
-            val photoPath = Constants().URL_STORAGE + "/pics"
-            Glide.with(this).load(photoPath).centerCrop().circleCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                    .into(mainPhoto)
-           /* if (data != null) {
-                val imageSelected = data.data
-                val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? = requireContext().contentResolver.query(
-                        imageSelected!!,
-                        filepathColumn,
-                        null,
-                        null,
-                        null
-                )
-                if (cursor != null) {
-                    cursor.moveToFirst()
-                    val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
-                    val photoPath: String = cursor.getString(imageIndex)
-                            Glide.with(this).load(photoPath).centerCrop().circleCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                                    .into(mainPhoto)
-                            cursor.close()
-                }
-            }*/
+        if (requestCode == 100 && data != null && data.data != null) {
+            imageUri = data.data
+            mainPhoto.setImageURI(imageUri)
+            uploadImage()
         }
     }
-
 
 
     private fun setCustomAdapter() {
