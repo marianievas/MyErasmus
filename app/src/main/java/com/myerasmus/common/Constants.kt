@@ -2,6 +2,8 @@ package com.myerasmus.common
 
 data class Constants(
 
+    val URL_STORAGE: String = "gs://myerasmus-7dc3a.appspot.com",
+
     // Preferences
     val PREF_EMAIL: String = "PREF_EMAIL",
     val PREF_USERNAME: String = "PREF_NAME",
@@ -9,6 +11,8 @@ data class Constants(
     val PREF_PROVIDER_PASSWORD: String = "PASSWORD",
     val PREF_PROVIDER_GOOGLE: String = "GOOGLE",
     val PREF_UID: String = "PREF_UID",
+    val PICK_PHOTO_FOR_AVATAR: Int = 1,
+    val SELECT_PHOTO_GALLERY: Int = 1,
     //val PREF_PHOTO: String = "URL_PHOTO",
     //val PICK_PHOTO_FOR_AVATAR: Int = 1,
    // val SELECT_PHOTO_GALLERY: Int = 1,
