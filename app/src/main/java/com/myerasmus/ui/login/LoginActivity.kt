@@ -20,6 +20,7 @@ import com.myerasmus.MainActivity
 import com.myerasmus.ProviderType
 import com.myerasmus.R
 import com.myerasmus.common.Constants
+import com.myerasmus.common.SharedPreferenceManager
 import com.myerasmus.ui.signup.SignUpActivity
 
 
@@ -41,7 +42,13 @@ class LoginActivity : AppCompatActivity(){
 
         auth = FirebaseAuth.getInstance()
 
-        isUserLogged()
+       // isUserLogged()
+        if (!SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP)) {
+            Log.d("first time2", "2 is_first_time = "+ SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP))
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         emailET = findViewById(R.id.editTextEmail)
         passwordET = findViewById(R.id.editTextPassword)

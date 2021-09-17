@@ -1,7 +1,6 @@
 package com.myerasmus
 
 import android.app.AlertDialog
-import android.content.ClipData
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,9 +70,38 @@ class MainActivity : AppCompatActivity()  {
         recycleView.layoutManager = LinearLayoutManager(this)
         recycleView.setHasFixedSize(true)
 
-        diaryArrayList.add(DiaryFromList("Day in Berlin", "This day has been fantastic so far. We have visited loads of places and we have met new people.","2022-04-23","https://www.publicdomainpictures.net/pictures/270000/nahled/friends-in-the-park.jpg"))
-        diaryArrayList.add(DiaryFromList("First day of classes", "So interesting!!!!!","2021-10-19","https://upload.wikimedia.org/wikipedia/commons/6/68/050322-tumuenchen-parabeln.jpg"))
-        diaryArrayList.add(DiaryFromList("Englischer Garten + Volleyball match", "So much fun. Can't wait to repeat the plan:)","2021-10-10","https://live.staticflickr.com/2940/14678882912_b014edefa0_b.jpg"))
+
+        val diaries = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let { db.collection("users").document(it).collection("Diary") }
+        val source = Source.CACHE
+        var i: Int = 1
+        SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
+            db.collection("users").document(it).collection("Diary").get().addOnSuccessListener { diaries ->
+            for (doc in diaries){
+                val list : MutableMap<String, Any> = doc.data
+                diaryArrayList.add(DiaryFromList(list.getValue("title") as String, list.getValue("description") as String,list.getValue("date") as String,     list.getValue("image") as String, list.getValue("mood") as String))
+                //diaryArrayList.add(DiaryFromList(list[0].toString(), "This day has been fantastic so far. We have visited loads of places and we have met new people.","2022-04-23","https://www.publicdomainpictures.net/pictures/270000/nahled/friends-in-the-park.jpg",     "XD"))
+                ++i
+            }
+            }
+        }
+
+/*
+        var i : Int = SharedPreferenceManager.getIntValue(Constants().NUM_DIARY.toString())
+        while (i > 0){
+            docRef?.collection("Diary")?.document(i.toString())?.get(source)?.addOnSuccessListener { task ->
+                if (task.isSuccessful) {
+                    // Document found in the offline cache
+                    val document = task.result
+                    Log.d(TAG, "Cached document data: ${document?.data}")
+                } else {
+                    Log.d(TAG, "Cached get failed: ", task.exception)
+                }
+            }
+            i -= 1*/
+
+        diaryArrayList.add(DiaryFromList("Day in Berlin", "This day has been fantastic so far. We have visited loads of places and we have met new people.","2022-04-23","https://www.publicdomainpictures.net/pictures/270000/nahled/friends-in-the-park.jpg",     "XD"))
+        diaryArrayList.add(DiaryFromList("First day of classes", "So interesting!!!!!","2021-10-19","https://upload.wikimedia.org/wikipedia/commons/6/68/050322-tumuenchen-parabeln.jpg", "XD"))
+        diaryArrayList.add(DiaryFromList("Englischer Garten + Volleyball match", "So much fun. Can't wait to repeat the plan:)","2021-10-10","https://live.staticflickr.com/2940/14678882912_b014edefa0_b.jpg", "XD"))
 
         adapter = DiaryAdapter(this, diaryArrayList)
         recycleView.adapter = adapter

@@ -3,9 +3,11 @@ package com.myerasmus.ui.createEntryDiary
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +17,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.myerasmus.MainActivity
 import com.myerasmus.R
+import com.myerasmus.common.Constants
+import com.myerasmus.common.SharedPreferenceManager
+import com.myerasmus.data.model.DiaryFromList
 import kotlinx.android.synthetic.main.new_entry_diary.*
 import kotlinx.android.synthetic.main.new_entry_diary.view.*
 import java.text.SimpleDateFormat
@@ -28,6 +33,7 @@ class CreateEntryDiary: AppCompatActivity()  {
     private lateinit var btnAdd: Button
     private lateinit var datePicker: Button
     private lateinit var date: TextView
+    private lateinit var dataTime: String
     private lateinit var mainPhoto: ImageView
 
     var imageUri: Uri? = null
@@ -68,6 +74,7 @@ class CreateEntryDiary: AppCompatActivity()  {
         datePicker.setOnClickListener {
             val dpd = DatePickerDialog(this, { _, year, _, dayOfMonth ->
                 // Display Selected date in TextView
+                dataTime = "$dayOfMonth-$month-$year"
                 date.text = "$dayOfMonth-$month-$year"
             }, year, month, day)
             dpd.show()
@@ -133,20 +140,44 @@ class CreateEntryDiary: AppCompatActivity()  {
     }
 
     private fun newEntry(){
-        val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {
+    //    val mainIntent: Intent = Intent(this, MainActivity::class.java).apply {}
             // putExtra("titleEnt", titleEntry)
             // putExtra("descrEnt", description)
             // putExtra("provider", ProviderType.BASIC.name)
 
             //putExtra("date", date)
+
+        if (validate()){
+            val entryDiaryData = DiaryFromList(
+                    titleEntry.text.toString(),
+                            description.text.toString(),
+                            dataTime,
+                            mainPhoto.toString(),
+                    "sth"
+            )
+            Constants().NUM_DIARY += 1
+            val diaryCol = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let { db.collection("users").document(it) }
+            diaryCol?.collection("Diary")?.document(SharedPreferenceManager.getIntValue(Constants().NUM_DIARY.toString()).toString())?.set(entryDiaryData)?.addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully written!")
+                val mainIntent: Intent = Intent(this, MainActivity::class.java)
+                startActivity(mainIntent)
+                finish()
+            }?.addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
         }
+    }
 
-        //guardar entrada del diari per l'usuari
-        /*db.collection("users").document(email).set(
-                hashMapOf("address" to email, "username" to username))
-
-        startActivity(mainIntent)
-        finish()*/
+    private fun validate(): Boolean{
+        if (titleEntry.text.toString().isEmpty()) {
+            titleEntry.error = "Name should not be blank"
+            return false
+        } else if (description.text.toString().isEmpty()) {
+            description.error = "Description should not be blank"
+            return false
+        } else if (datePicker.text.toString() == "") {
+            datePicker.error = "Start date should not be blank"
+            return false
+        }
+        return true
     }
 
 }
